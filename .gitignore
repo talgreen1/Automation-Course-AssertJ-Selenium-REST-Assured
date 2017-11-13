@@ -2,6 +2,13 @@
 Thumbs.db
 ehthumbs.db
 
+#Intellij
+.idea/
+*.iml
+*.iws
+out/
+target/
+
 # Folder config file
 Desktop.ini
 

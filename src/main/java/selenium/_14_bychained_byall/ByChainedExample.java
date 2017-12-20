@@ -1,4 +1,4 @@
-package selenium._14_bychained;
+package selenium._14_bychained_byall;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,12 +12,12 @@ import java.net.URL;
 /*
  * https://www.codesd.com/item/how-does-the-bychained-class-of-selenium-really-work.html
  */
-public class App {
+public class ByChainedExample {
     private static WebDriver driver;
     public static void main(String[] args) throws MalformedURLException {
         createRemoteWebDriver();
 
-        String URI = "file:///" + System.getProperty("user.dir") + "/src/main/java/selenium/_14_bychained/index.html";
+        String URI = "file:///" + System.getProperty("user.dir") + "/src/main/java/selenium/_14_bychained_byall/index.html";
         driver.get(URI);
         By myBy = new ByChained(By.id("details2"),By.id("firstName"));
 

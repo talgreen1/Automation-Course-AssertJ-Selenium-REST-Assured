@@ -23,18 +23,18 @@ public class Get {
     public static void main(String[] args) {
 
 
-        ArrayList titles = when()
-                .get("http://jsonplaceholder.typicode.com/posts")
-                .path("userId");
-
-        System.out.println(titles);
+//        ArrayList titles = when()
+//                .get("http://jsonplaceholder.typicode.com/posts")
+//                .path("userId");
+//
+//        System.out.println(titles);
 
 
 //        validStatusCodeValidation();
 //        invalidStatusCodeValidation();
 //        validBodyValidation();
 
-        //extractBody();
+        extractBody();
 //        printTheResponse();
 //        extractBodyJsonPath();
 //        extractBodyJsonPathArray();

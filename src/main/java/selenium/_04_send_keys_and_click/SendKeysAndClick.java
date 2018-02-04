@@ -32,7 +32,7 @@ public class SendKeysAndClick {
     }
 
     private static WebDriver createFirefoxDriver() {
-        System.setProperty("webdriver.gecko.driver","c:/temp/selenium/drivers/geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver","C:\\temp\\Selenium\\Latest\\geckodriver.exe");
 
         return new FirefoxDriver();
     }

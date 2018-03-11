@@ -1,0 +1,7 @@
+{"caps":{
+  "browserName":"chrome",
+  "version":"",
+  "platform":"ANY",
+  "chromeOptions": {
+    "args":["--headless"]
+  }}}

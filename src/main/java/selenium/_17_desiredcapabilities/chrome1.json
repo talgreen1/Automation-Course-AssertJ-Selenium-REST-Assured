@@ -1,0 +1,11 @@
+{
+  "cabs": {
+    "browserName": "chrome",
+    "version": "",
+    "platform": "ANY",
+    "chromeOptions": {
+      "args":["--start-maximized"]
+      //more args: "--incognito", "--headless"
+    }
+  }
+}

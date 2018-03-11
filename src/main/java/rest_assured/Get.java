@@ -53,7 +53,7 @@ public class Get {
         //useJsonPathAndAssertJ2();
 //        validatingHeaders();
 //        debugPeek();
-//        debugFilters();
+        debugFilters();
 //        debugProxy();
     }
 

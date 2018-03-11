@@ -1,0 +1,8 @@
+{"caps":{
+"acceptInsecureCerts":true,
+  "browserName":"firefox",
+  "moz:firefoxOptions":
+  {"args":["-private","-headless"],
+    "prefs":{}},
+  "version":"",
+  "platform":"ANY"}}

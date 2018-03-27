@@ -25,8 +25,7 @@ public class SeleniumServer {
 
     private static void createRemoteWebDriver() throws MalformedURLException {
         WebDriver driver = new RemoteWebDriver(
-//                new URL("http://localhost:4444/wd/hub"),
-                new URL("http://192.168.99.100:4444/wd/hub"),
+                new URL("http://localhost:4444/wd/hub"),
                 DesiredCapabilities.chrome());
 
         driver.get("http://www.google.com");

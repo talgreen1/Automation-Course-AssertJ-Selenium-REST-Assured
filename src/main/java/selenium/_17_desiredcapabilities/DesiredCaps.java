@@ -30,7 +30,7 @@ public class DesiredCaps {
 
         System.out.println(getJsonFromDesiredCapabilities(DesiredCapabilities.chrome()));
 
-        Capabilities caps = getDesiredCapabilitesFromJsonFile("./src/main/java/selenium/_17_desiredcapabilities/firefox.json");
+        Capabilities caps = getDesiredCapabilitesFromJsonFile("./src/main/java/selenium/_17_desiredcapabilities/chrome-incognito.json");
 
 
         driver = new RemoteWebDriver(

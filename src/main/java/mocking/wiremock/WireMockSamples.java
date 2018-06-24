@@ -3,6 +3,10 @@ package mocking.wiremock;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
+import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
+
+import javax.sound.midi.Soundbank;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -15,9 +19,10 @@ public class WireMockSamples {
 //        stubForPostWithHeaders();
 
 //        stubWithVerify();
-        stubWithVerify2Times();
+//        stubWithVerify2Times();
 
-        stubWithRetryVerify();
+        stubWithVerifyandExtractRequests();
+//        stubWithRetryVerify();
     }
 
     private static void stubWithRetryVerify() {
@@ -51,26 +56,28 @@ public class WireMockSamples {
     /**
      * This method verify that the stub was executed and extract the request
      */
-    private static void stubWithVerifyandExtractRequest() {
-//        // Init the wire mock to listen on port
-//        int port = 7979;
-//        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
-//        wireMockServer.start();
-//        WireMock.configureFor("localhost", wireMockServer.port());
-//
-//        // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
-//        stubFor(post(urlEqualTo("/users/add"))
-//                .withHeader("Content-Type", equalTo("text/xml"))
-//                .willReturn(aResponse()
-//                        .withStatus(200)
-//                        .withBody("Hello from POST with Header")));
-//
-//
-//        verify(postRequestedFor(urlEqualTo("/users/add"))
-//                .withHeader("Content-Type", equalTo("text/xml")));
-//
-//        // At the end - stop the server
-////        wireMockServer.stop();
+    private static void stubWithVerifyandExtractRequests() {
+        // Init the wire mock to listen on port
+        int port = 7979;
+        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
+
+        // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
+        stubFor(post(urlEqualTo("/users/add"))
+                .withHeader("Content-Type", equalTo("text/xml"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("Hello from POST with Header")));
+
+
+        List<ServeEvent> allServeEvents = getAllServeEvents();
+        for (ServeEvent allServeEvent : allServeEvents) {
+            System.out.println(allServeEvent.getRequest().getUrl());
+        }
+
+        // At the end - stop the server
+//        wireMockServer.stop();
     }
 
     /**

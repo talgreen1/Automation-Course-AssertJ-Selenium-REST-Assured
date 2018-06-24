@@ -1,12 +1,16 @@
 package mocking.wiremock;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.VerificationException;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.RetryPolicy;
 
 import javax.sound.midi.Soundbank;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -15,17 +19,75 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 
 public class WireMockSamples {
     public static void main(String[] args) {
-//        stubForGet();
-//        stubForPostWithHeaders();
+        stubForGet();
+        stubForPostWithHeaders();
 
-//        stubWithVerify();
-//        stubWithVerify2Times();
+        stubWithVerify();
+        stubWithVerify2Times();
 
         stubWithVerifyandExtractRequests();
-//        stubWithRetryVerify();
+        stubWithRetryVerify();
+        stubWithRetryVerify2();
+
+
     }
 
+    private static void stubWithRetryVerify2() {
+        // Init the wire mock to listen on port
+        int port = 7979;
+        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
+
+        // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
+        stubFor(post(urlPathMatching(".*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("Hello response")));
+
+
+        RetryPolicy retryPolicy = new RetryPolicy()
+                .retryOn(VerificationException.class)
+                .withDelay(5, TimeUnit.SECONDS)
+                .withMaxRetries(5);
+
+        Failsafe.with(retryPolicy)
+                .onRetry((c, f, ctx) -> System.out.printf("Failure #%s. Retrying.", ctx.getExecutions()))
+                .run(() -> {
+                    verify(postRequestedFor(urlEqualTo("/verify/this"))
+                            .withHeader("Content-Type", equalTo("text/xml")));
+                });
+
+        // At the end - stop the server
+//        wireMockServer.stop();
+    }
     private static void stubWithRetryVerify() {
+        // Init the wire mock to listen on port
+        int port = 7979;
+        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
+
+        // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
+        stubFor(post(urlPathMatching(".*"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("Hello response")));
+
+
+        RetryPolicy retryPolicy = new RetryPolicy()
+                .retryOn(VerificationException.class)
+                .withDelay(5, TimeUnit.SECONDS)
+                .withMaxRetries(5);
+
+        Failsafe.with(retryPolicy)
+                .run(() -> {
+                    verify(postRequestedFor(urlEqualTo("/verify/this"))
+                            .withHeader("Content-Type", equalTo("text/xml")));
+                });
+
+        // At the end - stop the server
+//        wireMockServer.stop();
     }
 
     /**

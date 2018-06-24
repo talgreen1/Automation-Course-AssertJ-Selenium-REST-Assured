@@ -9,6 +9,10 @@
         <Logger name="logging.log4j2.test" level="trace">
             <!--<AppenderRef ref="Stdout"/>-->
         </Logger>
+        <Logger name="org.eclipse.jetty" level="ERROR" additivity="false">
+            <AppenderRef ref="Stdout"/>
+        </Logger>
+
         <Root level="all">
             <AppenderRef ref="Stdout"/>
         </Root>

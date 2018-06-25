@@ -1,0 +1,17 @@
+{
+    "request" : {
+      "url" : "/postReq",
+      "method" : "POST",
+      "bodyPatterns" : [ {
+        "equalToJson" : "{\"name\":\"John\"}"
+      } ]
+    },
+    "response" : {
+      "status" : 200,
+      "body" : "{ \"name\":\"John\", \"age\":31, \"city\":\"New York\" }",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    },
+    "uuid" : "b51e0c3a-9a2c-428b-b4d5-65d47ceb38a6"
+  }

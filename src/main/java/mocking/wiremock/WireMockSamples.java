@@ -3,12 +3,15 @@ package mocking.wiremock;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.VerificationException;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.RetryPolicy;
+import org.apache.commons.io.FileUtils;
 
-import javax.sound.midi.Soundbank;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,16 +21,17 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @SuppressWarnings("Duplicates")
 
 public class WireMockSamples {
-    public static void main(String[] args) {
-        stubForGet();
-        stubForPostWithHeaders();
-
-        stubWithVerify();
-        stubWithVerify2Times();
-
-        stubWithVerifyandExtractRequests();
-        stubWithRetryVerify();
-        stubWithRetryVerify2();
+    public static void main(String[] args) throws IOException {
+//        stubForGet();
+//        stubForPostWithHeaders();
+        stubForPostFromFile();
+//
+//        stubWithVerify();
+//        stubWithVerify2Times();
+//
+//        stubWithVerifyandExtractRequests();
+//        stubWithRetryVerify();
+//        stubWithRetryVerify2();
 
 
     }
@@ -183,6 +187,27 @@ public class WireMockSamples {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withBody("Hello from POST with Header")));
+
+        // At the end - stop the server
+//        wireMockServer.stop();
+    }
+
+    /**
+     * Stubbing for POST request for "/users" path with "Content-Type" header of "text/xml"
+     */
+    private static void stubForPostFromFile() throws IOException {
+        // Init the wire mock to listen on port
+        int port = 7979;
+        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
+
+        // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
+        String jsonString = FileUtils.readFileToString(new File("./src/main/java/mocking/wiremock/postRequest.json"), Charset.defaultCharset());
+
+
+        StubMapping mapping = StubMapping.buildFrom(jsonString);
+        wireMockServer.addStubMapping(mapping);
 
         // At the end - stop the server
 //        wireMockServer.stop();

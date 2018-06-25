@@ -20,20 +20,18 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 
 @SuppressWarnings("Duplicates")
 
-public class WireMockSamples {
+public class WireMockMockingSamples {
     public static void main(String[] args) throws IOException {
-//        stubForGet();
-//        stubForPostWithHeaders();
+        stubForGet();
+        stubForPostWithHeaders();
         stubForPostFromFile();
-//
-//        stubWithVerify();
-//        stubWithVerify2Times();
-//
-//        stubWithVerifyandExtractRequests();
-//        stubWithRetryVerify();
-//        stubWithRetryVerify2();
 
+        stubWithVerify();
+        stubWithVerify2Times();
 
+        stubWithVerifyandExtractRequests();
+        stubWithRetryVerify();
+        stubWithRetryVerify2();
     }
 
     private static void stubWithRetryVerify2() {
@@ -203,7 +201,7 @@ public class WireMockSamples {
         WireMock.configureFor("localhost", wireMockServer.port());
 
         // Add 1 stub to the mock server. A stub is a mapping between a request and a response.
-        String jsonString = FileUtils.readFileToString(new File("./src/main/java/mocking/wiremock/postRequest.json"), Charset.defaultCharset());
+        String jsonString = FileUtils.readFileToString(new File("./src/main/java/mocking/wiremock/jsonMappingFiles/postRequest.json"), Charset.defaultCharset());
 
 
         StubMapping mapping = StubMapping.buildFrom(jsonString);

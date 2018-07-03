@@ -3,6 +3,7 @@ package mocking.wiremock;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.VerificationException;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import net.jodah.failsafe.Failsafe;
@@ -17,27 +18,64 @@ import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 
 @SuppressWarnings("Duplicates")
 
 public class WireMockMockingSamples {
     public static void main(String[] args) throws IOException {
-        stubForGet();
-        stubForPostWithHeaders();
-        stubForPostFromFile();
+//        stubForGet();
+//        stubForPostWithHeaders();
+//        stubForPostFromFile();
+//
+//        stubWithVerify();
+//        stubWithVerify2Times();
+//
+//        stubWithVerifyandExtractRequests();
+//        stubWithRetryVerify();
+//        stubWithRetryVerify2();
 
-        stubWithVerify();
-        stubWithVerify2Times();
+        usingScenarios();
+    }
 
-        stubWithVerifyandExtractRequests();
-        stubWithRetryVerify();
-        stubWithRetryVerify2();
+    private static void usingScenarios() {
+        // Init the wire mock to listen on port
+        int port = 7979;
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
+
+        stubFor(get(urlEqualTo("/user/add")).inScenario("Add User")
+                .whenScenarioStateIs(STARTED)
+                .willReturn(aResponse()
+                        .withBody("User added OK"))
+                .willSetStateTo("User Added")
+        );
+
+        stubFor(get(urlEqualTo("/user/add")).inScenario("Add User")
+                .whenScenarioStateIs("User Added")
+                .willReturn(aResponse()
+                        .withBody("User already added").withStatus(404))
+
+        );
+
+
+        // List all Scenarios
+        List<Scenario> allScenarios = getAllScenarios();
+        for (Scenario scenario : allScenarios) {
+            System.out.println(scenario.getName());
+
+            System.out.println(scenario.getPossibleStates());
+        }
+
+        // At the end - stop the server
+//        wireMockServer.stop();
     }
 
     private static void stubWithRetryVerify2() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -63,10 +101,11 @@ public class WireMockMockingSamples {
         // At the end - stop the server
 //        wireMockServer.stop();
     }
+
     private static void stubWithRetryVerify() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -98,7 +137,7 @@ public class WireMockMockingSamples {
     private static void stubWithVerify2Times() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -123,7 +162,7 @@ public class WireMockMockingSamples {
     private static void stubWithVerifyandExtractRequests() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -150,7 +189,7 @@ public class WireMockMockingSamples {
     private static void stubWithVerify() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -175,7 +214,7 @@ public class WireMockMockingSamples {
     private static void stubForPostWithHeaders() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -196,7 +235,7 @@ public class WireMockMockingSamples {
     private static void stubForPostFromFile() throws IOException {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
@@ -214,10 +253,10 @@ public class WireMockMockingSamples {
     /**
      * Stubbing for ANY get API request
      */
-    private static void stubForGet(){
+    private static void stubForGet() {
         // Init the wire mock to listen on port
         int port = 7979;
-        WireMockServer wireMockServer = new WireMockServer( wireMockConfig().port(port));
+        WireMockServer wireMockServer = new WireMockServer(wireMockConfig().port(port));
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 

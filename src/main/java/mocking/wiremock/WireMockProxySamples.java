@@ -16,8 +16,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 public class WireMockProxySamples {
     public static void main(String[] args) {
 
-//        proxyAllRequestToAnotherServer();
-//        monitorStandAlonProxyServer();
+        proxyAllRequestToAnotherServer();
+        monitorStandAlonProxyServer();
         waitForSpecificRequest();
     }
 
@@ -66,7 +66,7 @@ public class WireMockProxySamples {
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
 
-        stubFor(get(urlMatching(".*"))
+        stubFor(post(urlMatching(".*"))
                 .willReturn(aResponse().proxiedFrom("http://httpbin.org/")));
 
 //        At the end - stop the server

@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class UseProxy {
     public static void main(String[] args) throws MalformedURLException {
-        String PROXY = "one.proxy.att.com:8080";
+        String PROXY ="PROXYSERVER:PORT";
         Proxy proxy = new Proxy();
         proxy.setProxyType(Proxy.ProxyType.MANUAL);
         proxy.setHttpProxy(PROXY);

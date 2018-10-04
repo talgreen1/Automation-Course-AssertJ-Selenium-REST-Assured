@@ -48,7 +48,7 @@ public class Get {
 //        getTheResponse();
 //        addHeaders();
 //        assertionContainsSting();
-//        assertionJsonPath();
+        assertionJsonPath();
             //useJsonPathAndAssertJ();
         //useJsonPathAndAssertJ2();
 //        validatingHeaders();

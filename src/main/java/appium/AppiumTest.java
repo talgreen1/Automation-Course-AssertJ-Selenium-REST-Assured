@@ -19,8 +19,8 @@ public class AppiumTest {
         capabilities.setCapability(MobileCapabilityType.APPLICATION_NAME, "Samsung S4");
         capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
 
-//        capabilities.setCapability("appPackage", "com.att.tlv.lattice.agent.android.testandroid");
-//        capabilities.setCapability("appActivity", "com.att.tlv.lattice.agent.android.testandroid.LoginActivity");
+//        capabilities.setCapability("appPackage", "com.android.testandroid");
+//        capabilities.setCapability("appActivity", "com.android.testandroid.LoginActivity");
 
 
 

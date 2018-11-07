@@ -4,7 +4,11 @@ function uuidv4() {
         return v.toString(16);
     });
 }
-if (request.headers['SECRET-KEY'] != 'Ken-Sent-Me'){
+if (request.request_method != "POST"){
+    msg = "This is not a POST request";
+    response.status = 406;
+}
+else if (request.headers['SECRET-KEY'] != 'Ken-Sent-Me'){
     msg = "Key is missing";
     response.status = 400;
 }

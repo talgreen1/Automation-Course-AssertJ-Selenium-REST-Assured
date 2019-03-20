@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class Waits {
@@ -28,7 +29,8 @@ public class Waits {
         //driver.findElement(By.id("INVALID_ID")).sendKeys("some text");
 
 
-        WebDriverWait wait10Sec = new WebDriverWait(driver, 10); // Time is in seconds
+        WebDriverWait wait10Sec = new WebDriverWait(driver, 50); // Time is in seconds
+        wait10Sec.pollingEvery(Duration.ofSeconds(1));
 
 
 //        wait10Sec.until(ExpectedConditions.elementToBeClickable(By.id("SomeID")));
